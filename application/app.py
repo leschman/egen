@@ -18,7 +18,7 @@ while ser.isOpen():
 	voltage = ser.readline()
 	#clean up input.
 	voltage = voltage[:voltage.index('\r')]
-	print( int(voltage, 2))
+	print( int(voltage, 2)* .0049)
 #	print repr(voltage)
 
 #manipulate data
