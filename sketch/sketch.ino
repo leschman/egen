@@ -23,7 +23,7 @@ void loop()
     // read first analog input, divide by 4 to make the range 0-255:
     //firstSensor = analogRead(A0)/4;
     voltage = analogRead(A3);
-    Serial.write(voltage);
+    Serial.println(voltage, BIN);
     // delay 10ms to let the ADC recover:
     delay(10);
     // read second analog input, divide by 4 to make the range 0-255:
