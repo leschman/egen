@@ -14,7 +14,7 @@ ser.write("a")
 
 #read data
 while ser.isOpen():
-	print(ser.read)
+	print(ser.read())
 
 #manipulate data
 #store data
