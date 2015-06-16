@@ -3,9 +3,12 @@
  logs data from arduino and displays it to GUI.
 """
 from serial import Serial
+
+
 COM_PORT = "/dev/ttyACM0"
 BAUD_RATE = 9600
 TIMEOUT = 1
+list = []
 
 #establish connection with arduino
 ser = Serial(COM_PORT, BAUD_RATE, timeout=TIMEOUT)
@@ -18,7 +21,8 @@ while ser.isOpen():
 	voltage = ser.readline()
 	#clean up input.
 	voltage = voltage[:voltage.index('\r')]
-	print( int(voltage, 2)* .0049)
+	voltage = ( int(voltage, 2)* .004882812)
+
 #	print repr(voltage)
 
 #manipulate data
