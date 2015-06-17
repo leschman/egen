@@ -47,7 +47,7 @@ with open(RESULTS_FILE, 'wb') as csvfile:
 		writer.writerows(row)
 		print voltage
 		plt.scatter(count, average)
-		plt.title('{0} volts'.format(average))
+		plt.title('{:4.2f} volts'.format(average))
 		plt.draw()
 		count = count + 1
 		if count == GRAPH_WIDTH:
