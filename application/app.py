@@ -13,7 +13,7 @@ COM_PORT = "/dev/ttyACM0"
 BAUD_RATE = 9600
 TIMEOUT = 1
 GRAPH_WIDTH = 100
-SAMPLE_SIZE = 40
+SAMPLE_SIZE = 100
 count = 0
 #establish connection with arduino
 ser = Serial(COM_PORT, BAUD_RATE, timeout=TIMEOUT)
