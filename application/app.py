@@ -37,7 +37,6 @@ def setup_plot():
 	plt.title(' volts')
 	plt.ion()
 	plt.show()
-	count = 0
 
 #establish connection with arduino
 ser = Serial(COM_PORT, BAUD_RATE, timeout=TIMEOUT)
@@ -67,13 +66,14 @@ with open(RESULTS_FILE, 'wb') as csvfile:
 		time = datetime.now().time()
 		row = [[time.strftime('%H%M%S%f'),average]]
 		writer.writerows(row)
-		print voltage
+		print '{0}, {1}, {2}'.format(voltage, average, count)
 		plt.scatter(count, average)
 		plt.title('{:4.2f} volts'.format(average))
 		plt.draw()
 		count = count + 1
-		if count == GRAPH_WIDTH:
+		if count >= GRAPH_WIDTH:
 			setup_plot()
+			count = 0
 	print len(data)	
 
 
