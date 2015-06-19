@@ -41,7 +41,10 @@ def setup_plot():
 #establish connection with arduino
 ser = Serial(COM_PORT, BAUD_RATE, timeout=TIMEOUT)
 while ser.read() == 'A':
+	print "Establishing serial connection, standby...     \r"
 	ser.write("a")
+
+print ""
 
 #set up csv results file.
 with open(RESULTS_FILE, 'wb') as csvfile:
