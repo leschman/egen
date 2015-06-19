@@ -2,8 +2,12 @@
 
 Servo servo; //create servo object.
 
-int pos = 0;            // Postion of Servo.
+int pos = 0;             // Postion of Servo.
 boolean countUp = true;  // track if pos is going up or down.
+int delayCount = 0;
+const int delayZero = 333;     //delay at pos 0, (~5 seconds)
+const int delayOneEighty = 667;//delay at pos 180 (~10 seconds)
+
 
 int firstSensor = 0;    // first analog sensor
 int secondSensor = 0;   // second analog sensor
@@ -35,22 +39,28 @@ void loop()
     
     //servo control. 
     servo.write(pos);
-    
-    if(countUp){
-      pos++;
-      if(pos >= 180){
-        countUp = false;
+  
+    if(countUp){                    // if pos should move up.
+      if(delayCount >= delayZero){  // and the 
+        pos++;
+        if(pos >= 180){
+          countUp = false;
+          delayCount = 0;
+        }
       }
-    }else{
-      pos--;
-      if(pos <=0){
-        countUp = true;
+    }else{  
+      if(delayCount >= delayOneEighty){
+        pos--;
+        if(pos <=0){
+          countUp = true;
+          delayCount = 0;
+        }
       }
     }
-   
     
     // delay 15ms for servo to move,
     // a delay of 10ms was needed to let the ADC recover.
+    delayCount++;
     delay(15);
                    
  }
