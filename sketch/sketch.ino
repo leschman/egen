@@ -1,3 +1,10 @@
+#include <Servo.h>
+
+Servo servo; //create servo object.
+
+int pos = 0;            // Postion of Servo.
+boolean countUp = true;  // track if pos is going up or down.
+
 int firstSensor = 0;    // first analog sensor
 int secondSensor = 0;   // second analog sensor
 int thirdSensor = 0;    // digital sensor
@@ -10,30 +17,42 @@ void setup()
   Serial.begin(9600);
   pinMode(3, OUTPUT);   // set pin 3 to supply voltage. 
   digitalWrite(3, HIGH); // put voltage on the pin.
-  pinMode(A3, INPUT);   // analog read on pin A3
+  pinMode(A3, INPUT);   // analog read on pin A3.
+  
+  servo.attach(8); //attach the servo to pin 8.
+  
   establishContact();  // send a byte to establish contact until receiver responds 
 }
 
 void loop()
 {
-  // if we get a valid byte, read analog ins:
+ 
   if (Serial.available() > 0) {
-    // get incoming byte:
-    //inByte = Serial.read();
-    // read first analog input, divide by 4 to make the range 0-255:
-    //firstSensor = analogRead(A0)/4;
+    
+    //collect and send the data.
     voltage = analogRead(A3);
     Serial.println(voltage, BIN);
-    // delay 10ms to let the ADC recover:
-    delay(10);
-    // read second analog input, divide by 4 to make the range 0-255:
-    //secondSensor = analogRead(1)/4;
-    // read  switch, map it to 0 or 255L
-    //thirdSensor = map(digitalRead(2), 0, 1, 0, 255);  
-    // send sensor values:
-   // Serial.write(firstSensor);
-   // Serial.write(secondSensor);
-   // Serial.write(thirdSensor);               
+    
+    //servo control. 
+    servo.write(pos);
+    
+    if(countUp){
+      pos++;
+      if(pos >= 180){
+        countUp = false;
+      }
+    }else{
+      pos--;
+      if(pos <=0){
+        countUp = true;
+      }
+    }
+   
+    
+    // delay 15ms for servo to move,
+    // a delay of 10ms was needed to let the ADC recover.
+    delay(15);
+                   
  }
 }
 void establishContact() {
