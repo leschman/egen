@@ -25,7 +25,7 @@ void setup()
   
   servo.attach(8); //attach the servo to pin 8.
 
-  
+  zeroServo();  
   establishContact();  // send a byte to establish contact until receiver responds 
 }
 
@@ -45,8 +45,8 @@ void loop()
     if(countUp){                    // if pos should move up.
       if(delayCount >= delayClosed){  // and the 
         pos++;
-        if(pos >= 85){
-          countUp = false;
+        if(pos >= 90){
+          //countUp = false;
           delayCount = 0;
         }
       }
@@ -71,6 +71,14 @@ void establishContact() {
   while (Serial.available() <= 0) {
     Serial.print('A');   // send a capital A
     delay(300);
+  }
+}
+void zeroServo(){
+  pos = 180;
+  while (pos >= 0){
+    servo.write(0);
+    pos--;
+    delay(15);
   }
 }
 
