@@ -5,8 +5,8 @@ Servo servo; //create servo object.
 int pos = 0;             // Postion of Servo.
 boolean countUp = true;  // track if pos is going up or down.
 int delayCount = 0;
-const int delayZero = 333;     //delay at pos 0, (~5 seconds)
-const int delayOneEighty = 667;//delay at pos 180 (~10 seconds)
+const int delayClosed = 333;//delay at pos 0, (~5 seconds)
+const int delayOpen = 0;//delay when open
 
 
 int firstSensor = 0;    // first analog sensor
@@ -24,6 +24,7 @@ void setup()
   pinMode(A3, INPUT);   // analog read on pin A3.
   
   servo.attach(8); //attach the servo to pin 8.
+
   
   establishContact();  // send a byte to establish contact until receiver responds 
 }
@@ -33,23 +34,24 @@ void loop()
  
   if (Serial.available() > 0) {
     
-    //collect and send the data.
+    //collect and send the voltage data.
     voltage = analogRead(A3);
     Serial.println(voltage, BIN);
+
     
     //servo control. 
     servo.write(pos);
   
     if(countUp){                    // if pos should move up.
-      if(delayCount >= delayZero){  // and the 
+      if(delayCount >= delayClosed){  // and the 
         pos++;
-        if(pos >= 180){
+        if(pos >= 85){
           countUp = false;
           delayCount = 0;
         }
       }
     }else{  
-      if(delayCount >= delayOneEighty){
+      if(delayCount >= delayOpen){
         pos--;
         if(pos <=0){
           countUp = true;
