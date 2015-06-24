@@ -7,6 +7,7 @@ from datetime import datetime
 import csv
 import numpy as np
 import matplotlib.pyplot as plt
+from math import exp
 
 RESULTS_FILE = "./application/results.csv"
 COM_PORT = "/dev/ttyACM0"
@@ -25,15 +26,15 @@ def update_line(num, data, line):
 def manipulate_data(data):
 	try:
 		data = data[:data.index('\r')]
-		data = (int(data, 2) * VOLTAGE_STEP_SIZE)
-		return float(data)
+		data = int(data, 2)  
+		return data
 	except ValueError:
-		return None
+		return 0.1 
 
 #set up real time ploting
 def setup_plot():
 	plt.clf()
-	plt.axis([0,GRAPH_WIDTH,0,6])
+	plt.axis([0,GRAPH_WIDTH,0,30])
 	plt.title(' volts')
 	plt.ion()
 	plt.show()
@@ -63,16 +64,17 @@ with open(RESULTS_FILE, 'wb') as csvfile:
 			#clean up input.
 			data = manipulate_data(voltage)
 			if data:
-				readings.append(data)
+				salinity = 2 *10 ** -21 * exp(0.0677 * data)  
+				readings.append(salinity)
 
 		if len(readings) > 0:
 			average = sum(readings)/len(readings)
 			time = datetime.now().time()
 			row = [[time.strftime('%H%M%S%f'),average]]
 			writer.writerows(row)
-			print '{0}, {1}, {2}'.format(voltage, average, count)
+			print '{0}, {1}, {2}'.format(data, average, count)
 			plt.scatter(count, average)
-			plt.title('{:4.2f} volts'.format(average))
+			plt.title('{:4.2f} % solute by weight'.format(average))
 			plt.draw()
 			count = count + 1
 			if count >= GRAPH_WIDTH:
